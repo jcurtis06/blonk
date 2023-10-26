@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=3 uid="uid://c60y8bgwvddj8"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_ele02"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vqlj4"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_3ihen"]
+font_size = 64
+font_color = Color(0.717647, 1, 0.513726, 1)
+outline_size = 50
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ni7yd"]
+albedo_color = Color(0.435294, 1, 0.580392, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_y4es5"]
+material = SubResource("StandardMaterial3D_ni7yd")
+size = Vector3(10, 0.5, 10)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_x1mdb"]
+points = PackedVector3Array(-5, -0.25, -5, -5, 0.25, -5, 5, -0.25, -5, -5, -0.25, 5, -5, 0.25, 5, 5, 0.25, -5, 5, -0.25, 5, 5, 0.25, 5)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_ele02")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="PanelContainer" type="PanelContainer" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vqlj4")
+
+[node name="VBox" type="VBoxContainer" parent="UI/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Title" type="Label" parent="UI/PanelContainer/VBox"]
+layout_mode = 2
+text = "BLONK"
+label_settings = SubResource("LabelSettings_3ihen")
+horizontal_alignment = 1
+
+[node name="Multiplayer" type="Button" parent="UI/PanelContainer/VBox"]
+layout_mode = 2
+text = "Multiplayer"
+
+[node name="Settings" type="Button" parent="UI/PanelContainer/VBox"]
+layout_mode = 2
+text = "Settings"
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/StaticBody3D"]
+mesh = SubResource("BoxMesh_y4es5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_x1mdb")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://player.tscn")
+spawn_path = NodePath("..")
+
+[connection signal="pressed" from="UI/PanelContainer/VBox/Multiplayer" to="." method="_on_multiplayer_pressed"]
