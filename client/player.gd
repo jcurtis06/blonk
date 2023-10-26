@@ -9,6 +9,7 @@ extends CharacterBody3D
 
 var jumping: bool = false
 var mouse_captured: bool = false
+var flashlight_on: bool = true
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -46,6 +47,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		
 		sync.position = global_position
+		_flashlight()
 
 func capture_mouse() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -77,3 +79,8 @@ func _jump(delta: float) -> Vector3:
 		return jump_vel
 	jump_vel = Vector3.ZERO if is_on_floor() else jump_vel.move_toward(Vector3.ZERO, gravity * delta)
 	return jump_vel
+	
+func _flashlight():
+	if Input.is_action_just_pressed("flashlight_toggle"):
+		flashlight_on = !flashlight_on
+	$Camera3D/SpotLight3D.light_energy = 1 if flashlight_on else 0

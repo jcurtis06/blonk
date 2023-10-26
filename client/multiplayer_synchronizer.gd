@@ -14,3 +14,10 @@ extends MultiplayerSynchronizer
 			position = val
 		else:
 			get_parent().position = val
+			
+@export var flashlight_on:bool:
+	set(val):
+		if is_multiplayer_authority():
+			flashlight_on = val
+		else:
+			get_parent().flashlight_on = val
