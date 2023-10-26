@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwu0gpkl0idyp"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_5luvp"]
+[ext_resource type="Script" path="res://multiplayer_synchronizer.gd" id="2_lmqsi"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qj2ox"]
+properties/0/path = NodePath("MultiplayerSynchronizer:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+properties/1/path = NodePath("MultiplayerSynchronizer:y_rotation")
+properties/1/spawn = true
+properties/1/sync = true
+properties/1/watch = false
+
+[node name="PlayerCharacter" type="Node"]
+script = ExtResource("1_5luvp")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_qj2ox")
+script = ExtResource("2_lmqsi")
