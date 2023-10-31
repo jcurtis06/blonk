@@ -1,4 +1,6 @@
 extends Node
 
-func _ready():
-	$MultiplayerSynchronizer.set_multiplayer_authority(str(name).to_int())
+@export var flashlight_on = true
+
+func _enter_tree():
+	set_multiplayer_authority(str(name).to_int())

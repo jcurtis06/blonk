@@ -1,86 +1,48 @@
 extends CharacterBody3D
 
-@export_category("Player")
-@export_range(1, 35, 1) var speed: float = 10 # m/s
-@export_range(10, 400, 1) var acceleration: float = 100 # m/s^2
+@export var speed = 500
+@export var jump_vel = 4.5
+@export var sensitivity = 0.001
+@export var flashlight_on = true
 
-@export_range(0.1, 3.0, 0.1) var jump_height: float = 1 # m
-@export_range(0.1, 3.0, 0.1, "or_greater") var camera_sens: float = 1
+var y_vel = 0
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-var jumping: bool = false
-var mouse_captured: bool = false
-var flashlight_on: bool = true
+@onready var camera := $Camera3D
+@onready var sync := $MultiplayerSynchronizer
 
-var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
-
-var move_dir: Vector2 # Input direction for movement
-var look_dir: Vector2 # Input direction for look/aim
-
-var walk_vel: Vector3 # Walking velocity 
-var grav_vel: Vector3 # Gravity velocity 
-var jump_vel: Vector3 # Jumping velocity
-
-@onready var camera: Camera3D = $Camera3D
-@onready var sync: MultiplayerSynchronizer = $MultiplayerSynchronizer
+func _enter_tree():
+	set_multiplayer_authority(str(name).to_int())
 
 func _ready():
-	sync.set_multiplayer_authority(str(name).to_int())
-	camera.current = sync.is_multiplayer_authority()
-	mouse_captured = true
+	camera.current = is_multiplayer_authority()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		look_dir = event.relative * 0.001
-		if mouse_captured: _rotate_camera()
-	if Input.is_action_just_pressed("jump"): jumping = true
-	if Input.is_action_just_pressed("exit"):
-		if mouse_captured:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			mouse_captured = false
-		else:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			mouse_captured = true
-
-func _physics_process(delta: float) -> void:
-	if sync.is_multiplayer_authority():
-		velocity = _walk(delta) + _gravity(delta) + _jump(delta)
-		move_and_slide()
-		
-		sync.position = global_position
-		_flashlight()
-
-func capture_mouse() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	mouse_captured = true
-
-func release_mouse() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	mouse_captured = false
-
-func _rotate_camera(sens_mod: float = 1.0) -> void:
-	camera.rotation.y -= look_dir.x * camera_sens * sens_mod
-	camera.rotation.x = clamp(camera.rotation.x - look_dir.y * camera_sens * sens_mod, -1.5, 1.5)
-
-func _walk(delta: float) -> Vector3:
-	move_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-	var _forward: Vector3 = camera.global_transform.basis * Vector3(move_dir.x, 0, move_dir.y)
-	var walk_dir: Vector3 = Vector3(_forward.x, 0, _forward.z).normalized()
-	walk_vel = walk_vel.move_toward(walk_dir * speed * move_dir.length(), acceleration * delta)
-	return walk_vel
-
-func _gravity(delta: float) -> Vector3:
-	grav_vel = Vector3.ZERO if is_on_floor() else grav_vel.move_toward(Vector3(0, velocity.y - gravity, 0), gravity * delta)
-	return grav_vel
-
-func _jump(delta: float) -> Vector3:
-	if jumping:
-		if is_on_floor(): jump_vel = Vector3(0, sqrt(4 * jump_height * gravity), 0)
-		jumping = false
-		return jump_vel
-	jump_vel = Vector3.ZERO if is_on_floor() else jump_vel.move_toward(Vector3.ZERO, gravity * delta)
-	return jump_vel
+func _physics_process(delta):
+	$Camera3D/SpotLight3D.light_energy = int(flashlight_on)
 	
-func _flashlight():
+	if !is_multiplayer_authority(): return
+	var horizontal_velocity = Input.get_vector("move_left", "move_right", "move_forward", "move_backward").normalized() * speed * delta
+	velocity = horizontal_velocity.x * global_transform.basis.x + horizontal_velocity.y * global_transform.basis.z
+	
+	if is_on_floor():
+		y_vel = 0
+		if Input.is_action_just_pressed("jump"):
+			y_vel = jump_vel
+	else:
+		y_vel -= gravity * delta
+	velocity.y = y_vel
+	
+	move_and_slide()
+	
+	if Input.is_action_just_pressed("ui_cancel"):
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE else Input.MOUSE_MODE_VISIBLE
+	
 	if Input.is_action_just_pressed("flashlight_toggle"):
 		flashlight_on = !flashlight_on
-	$Camera3D/SpotLight3D.light_energy = 1 if flashlight_on else 0
+
+func _input(event):
+	if !is_multiplayer_authority(): return
+	if event is InputEventMouseMotion:
+		rotate_y(-event.relative.x * sensitivity)
+		camera.rotate_x(-event.relative.y * sensitivity)
+		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)

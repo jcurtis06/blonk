@@ -1,15 +1,24 @@
-[gd_scene load_steps=7 format=3 uid="uid://c60y8bgwvddj8"]
+[gd_scene load_steps=11 format=3 uid="uid://c60y8bgwvddj8"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_ele02"]
+[ext_resource type="Script" path="res://game.gd" id="2_mpkty"]
+
+[sub_resource type="Theme" id="Theme_cnfh1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vqlj4"]
 bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_3ihen"]
-font_size = 64
+font_size = 32
 font_color = Color(0.717647, 1, 0.513726, 1)
 outline_size = 50
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cm0p1"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_0dd3r"]
+font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ni7yd"]
 albedo_color = Color(0.435294, 1, 0.580392, 1)
@@ -26,7 +35,17 @@ script = ExtResource("1_ele02")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="PanelContainer" type="PanelContainer" parent="UI"]
+[node name="MainMenu" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_cnfh1")
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/MainMenu"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -34,37 +53,147 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_vqlj4")
 
-[node name="VBox" type="VBoxContainer" parent="UI/PanelContainer"]
+[node name="VBox" type="VBoxContainer" parent="UI/MainMenu/PanelContainer"]
 layout_mode = 2
+offset_left = 478.0
+offset_top = 247.0
+offset_right = 674.0
+offset_bottom = 400.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Title" type="Label" parent="UI/PanelContainer/VBox"]
+[node name="Title" type="Label" parent="UI/MainMenu/PanelContainer/VBox"]
 layout_mode = 2
+offset_right = 196.0
+offset_bottom = 48.0
 text = "BLONK"
 label_settings = SubResource("LabelSettings_3ihen")
 horizontal_alignment = 1
 
-[node name="Multiplayer" type="Button" parent="UI/PanelContainer/VBox"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MainMenu/PanelContainer/VBox"]
 layout_mode = 2
-text = "Multiplayer"
+offset_top = 52.0
+offset_right = 196.0
+offset_bottom = 83.0
 
-[node name="Settings" type="Button" parent="UI/PanelContainer/VBox"]
+[node name="Join" type="Button" parent="UI/MainMenu/PanelContainer/VBox/HBoxContainer"]
 layout_mode = 2
+offset_right = 87.0
+offset_bottom = 31.0
+text = "Join Game"
+
+[node name="LineEdit" type="LineEdit" parent="UI/MainMenu/PanelContainer/VBox/HBoxContainer"]
+layout_mode = 2
+offset_left = 91.0
+offset_right = 196.0
+offset_bottom = 31.0
+size_flags_horizontal = 3
+placeholder_text = "Enter code"
+alignment = 1
+expand_to_text_length = true
+
+[node name="Host" type="Button" parent="UI/MainMenu/PanelContainer/VBox"]
+layout_mode = 2
+offset_top = 87.0
+offset_right = 196.0
+offset_bottom = 118.0
+text = "Host Game"
+
+[node name="Settings" type="Button" parent="UI/MainMenu/PanelContainer/VBox"]
+layout_mode = 2
+offset_top = 122.0
+offset_right = 196.0
+offset_bottom = 153.0
 text = "Settings"
 
-[node name="World" type="Node3D" parent="."]
+[node name="Lobby" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="StaticBody3D" type="StaticBody3D" parent="World"]
+[node name="PanelContainer" type="PanelContainer" parent="UI/Lobby"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cm0p1")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/StaticBody3D"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Lobby/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 50
+
+[node name="Title" type="Label" parent="UI/Lobby/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "welcom my dude"
+label_settings = SubResource("LabelSettings_3ihen")
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Lobby/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 80
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Lobby/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="UI/Lobby/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "playahs"
+label_settings = SubResource("LabelSettings_3ihen")
+horizontal_alignment = 1
+
+[node name="PlayerList" type="ItemList" parent="UI/Lobby/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+auto_height = true
+item_count = 1
+item_0/text = "Get some friends lol"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="UI/Lobby/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="UI/Lobby/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "gam"
+label_settings = SubResource("LabelSettings_3ihen")
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="UI/Lobby/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Lobby Code: 00000"
+label_settings = SubResource("LabelSettings_0dd3r")
+
+[node name="StartGame" type="Button" parent="UI/Lobby/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "lez gooooooo"
+
+[node name="Game" type="Node3D" parent="."]
+script = ExtResource("2_mpkty")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Game"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/StaticBody3D"]
 mesh = SubResource("BoxMesh_y4es5")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_x1mdb")
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="Game"]
 _spawnable_scenes = PackedStringArray("res://player.tscn")
 spawn_path = NodePath("..")
 
-[connection signal="pressed" from="UI/PanelContainer/VBox/Multiplayer" to="." method="_on_multiplayer_pressed"]
+[node name="HostHTTP" type="HTTPRequest" parent="."]
+
+[node name="JoinHTTP" type="HTTPRequest" parent="."]
+
+[connection signal="pressed" from="UI/MainMenu/PanelContainer/VBox/HBoxContainer/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="UI/MainMenu/PanelContainer/VBox/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="UI/Lobby/PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer2/StartGame" to="." method="_on_start_game_pressed"]
+[connection signal="request_completed" from="HostHTTP" to="." method="_on_host_http_request_completed"]
+[connection signal="request_completed" from="JoinHTTP" to="." method="_on_join_http_request_completed"]
