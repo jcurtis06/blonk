@@ -1,7 +1,10 @@
 from flask import Flask, request, jsonify
 from subprocess import Popen
-import random
-import uuid
+import random, uuid
+import argparse
+
+parser = argparse.ArgumentParser(description='Start the server with the given server executable.')
+parser.add_argument("--server-executable", type=str, help="The path to the server executable.", default="./builds/server.app/Contents/MacOS/BlonkServer")
 
 app = Flask(__name__)
 
@@ -12,7 +15,7 @@ def create_room():
   port = random.randint(8000, 9000)
   room_key = str(uuid.uuid4())[:8]
 
-  Popen(['./builds/server.app/Contents/MacOS/BlonkServer', "--port=" + str(port), "--key=" + room_key])
+  Popen([parser.parse_args().server_executable, "--port=" + str(port), "--key=" + room_key])
 
   rooms[room_key] = {"port": port, "players": []}
 
