@@ -7,7 +7,7 @@ Essentially hide and seek... online... in the dark... oh and with guns. And upgr
 1. Clone the repo
 2. Build the server Godot project
 3. Install Flask if not already installed, `pip install flask`
-4. Run `python server/master_server.py`, use `--build="path/to/executable`
+4. Run `python server/master_server.py`, use `--server-exe="path/to/executable` to set the path to the Godot server build
 5. Open `client/project.godot`, click "Host". A new server instance should start and the lobby code will be copied to your clipboard once the server is active.
 6. Enjoy!!!
 
