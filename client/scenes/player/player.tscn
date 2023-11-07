@@ -1,0 +1,81 @@
+[gd_scene load_steps=8 format=3 uid="uid://7gqvchdwdpt2"]
+
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_c1e4i"]
+[ext_resource type="AudioStream" uid="uid://bxu7uas8r4400" path="res://assets/sounds/footsteps.mp3" id="2_6rkko"]
+[ext_resource type="Texture2D" uid="uid://dp22cq1rasm0b" path="res://assets/textures/flashlight.webp" id="2_bbpen"]
+[ext_resource type="PackedScene" uid="uid://b8kgnydota2rf" path="res://assets/models/Dwayne__the_Squirtle__Johnson_The_rock+Squirtle.gltf" id="4_6ki43"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_gp25k"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_2fkig"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/sync = true
+properties/1/watch = false
+properties/2/path = NodePath(".:flashlight_on")
+properties/2/spawn = true
+properties/2/sync = true
+properties/2/watch = false
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_js8bo"]
+
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52148, 0)
+script = ExtResource("1_c1e4i")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_gp25k")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55696, -0.39383)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Camera3D"]
+light_color = Color(0.964706, 0.764706, 0.666667, 1)
+light_energy = 25.0
+light_projector = ExtResource("2_bbpen")
+shadow_enabled = true
+distance_fade_begin = 0.0
+distance_fade_shadow = 0.0
+distance_fade_length = 12000.0
+spot_angle = 40.0
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_2fkig")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_js8bo")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Debug" type="RichTextLabel" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -188.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_6rkko")
+
+[node name="AudioListener3D" type="AudioListener3D" parent="."]
+current = true
+
+[node name="Dwayne__the_Squirtle__Johnson_The_rock+Squirtle" parent="." instance=ExtResource("4_6ki43")]
+transform = Transform3D(-0.05, 4.37114e-09, 1.91069e-16, -7.62297e-25, -2.18557e-09, 0.05, 4.37114e-09, 0.05, 2.18557e-09, -0.873792, -1.09004, 1.21511)

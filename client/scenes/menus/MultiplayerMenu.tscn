@@ -1,0 +1,103 @@
+[gd_scene load_steps=7 format=3 uid="uid://b2gbr121ga20g"]
+
+[ext_resource type="Theme" uid="uid://cgvhxlh74eip8" path="res://scenes/menus/menu_theme.tres" id="1_w3pyl"]
+[ext_resource type="Script" path="res://scenes/menus/menu.gd" id="2_0qlab"]
+[ext_resource type="Script" path="res://scenes/menus/multiplayer_menu.gd" id="2_b15df"]
+[ext_resource type="FontFile" uid="uid://dkyaqyvuut0uv" path="res://assets/fonts/uni-sans.heavy-caps.otf" id="3_1rf3i"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5iins"]
+font = ExtResource("3_1rf3i")
+font_size = 120
+shadow_size = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_7ljeq"]
+font = ExtResource("3_1rf3i")
+font_size = 42
+font_color = Color(0.803922, 0.803922, 0.803922, 1)
+
+[node name="MultiplayerMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_w3pyl")
+script = ExtResource("2_0qlab")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 102.0
+offset_right = 783.0
+offset_bottom = 109.0
+
+[node name="Controller" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 330.0
+theme_override_constants/margin_left = 19
+script = ExtResource("2_b15df")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Controller"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Controller/VBoxContainer"]
+layout_mode = 2
+text = "Multiplayer"
+label_settings = SubResource("LabelSettings_5iins")
+
+[node name="MarginContainer2" type="MarginContainer" parent="Controller/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+
+[node name="Version" type="Label" parent="Controller/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+text = "Join or create a game"
+label_settings = SubResource("LabelSettings_7ljeq")
+
+[node name="MarginContainer" type="MarginContainer" parent="Controller/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 90
+
+[node name="Buttons" type="VBoxContainer" parent="Controller/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Controller/VBoxContainer/Buttons"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="Controller/VBoxContainer/Buttons/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+placeholder_text = "Enter Game Code Here"
+expand_to_text_length = true
+
+[node name="Join" type="Button" parent="Controller/VBoxContainer/Buttons/VBoxContainer"]
+layout_mode = 2
+text = "JOIN GAME"
+alignment = 0
+
+[node name="Host" type="Button" parent="Controller/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Host Game"
+alignment = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Controller/VBoxContainer/Buttons"]
+layout_mode = 2
+theme_override_constants/margin_top = 90
+
+[node name="Back" type="Button" parent="Controller/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Back
+"
+alignment = 0
+
+[node name="HostHTTP" type="HTTPRequest" parent="Controller"]
+
+[node name="JoinHTTP" type="HTTPRequest" parent="Controller"]
+
+[connection signal="pressed" from="Controller/VBoxContainer/Buttons/VBoxContainer/Join" to="Controller" method="_on_join_pressed"]
+[connection signal="pressed" from="Controller/VBoxContainer/Buttons/Host" to="Controller" method="_on_host_pressed"]
+[connection signal="pressed" from="Controller/VBoxContainer/Buttons/Back" to="Controller" method="_on_back_pressed"]
+[connection signal="request_completed" from="Controller/HostHTTP" to="Controller" method="_on_host_http_request_completed"]
+[connection signal="request_completed" from="Controller/JoinHTTP" to="Controller" method="_on_join_http_request_completed"]

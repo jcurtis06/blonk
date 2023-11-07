@@ -1,0 +1,95 @@
+[gd_scene load_steps=7 format=3 uid="uid://cdl5uylgkfg5"]
+
+[ext_resource type="Theme" uid="uid://cgvhxlh74eip8" path="res://scenes/menus/menu_theme.tres" id="1_4riv6"]
+[ext_resource type="Script" path="res://scenes/menus/start_menu.gd" id="2_vrp1l"]
+[ext_resource type="Script" path="res://scenes/menus/menu.gd" id="2_wlckr"]
+[ext_resource type="FontFile" uid="uid://dkyaqyvuut0uv" path="res://assets/fonts/uni-sans.heavy-caps.otf" id="3_3igps"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6osli"]
+font = ExtResource("3_3igps")
+font_size = 120
+shadow_size = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_woub0"]
+font = ExtResource("3_3igps")
+font_size = 42
+font_color = Color(0.803922, 0.803922, 0.803922, 1)
+
+[node name="StartMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_4riv6")
+script = ExtResource("2_wlckr")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+offset_left = 25.0
+offset_top = 102.0
+offset_right = 396.0
+offset_bottom = 109.0
+
+[node name="Container" type="MarginContainer" parent="."]
+layout_mode = 2
+offset_right = 330.0
+theme_override_constants/margin_left = 19
+script = ExtResource("2_vrp1l")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Container"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Container/VBoxContainer"]
+layout_mode = 2
+text = "Blonk"
+label_settings = SubResource("LabelSettings_6osli")
+
+[node name="MarginContainer2" type="MarginContainer" parent="Container/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+
+[node name="Version" type="Label" parent="Container/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+text = "Version 0.0.1"
+label_settings = SubResource("LabelSettings_woub0")
+
+[node name="MarginContainer" type="MarginContainer" parent="Container/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 90
+
+[node name="Buttons" type="VBoxContainer" parent="Container/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Multiplayer" type="Button" parent="Container/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Multiplayer"
+alignment = 0
+
+[node name="Singleplayer" type="Button" parent="Container/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Singleplayer"
+alignment = 0
+
+[node name="Settings" type="Button" parent="Container/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Settings"
+alignment = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Container/VBoxContainer/Buttons"]
+layout_mode = 2
+theme_override_constants/margin_top = 90
+
+[node name="Quit" type="Button" parent="Container/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Quit"
+alignment = 0
+
+[connection signal="pressed" from="Container/VBoxContainer/Buttons/Multiplayer" to="Container" method="_on_multiplayer_pressed"]
+[connection signal="pressed" from="Container/VBoxContainer/Buttons/Singleplayer" to="Container" method="_on_extras_pressed"]
+[connection signal="pressed" from="Container/VBoxContainer/Buttons/Settings" to="Container" method="_on_settings_pressed"]
+[connection signal="pressed" from="Container/VBoxContainer/Buttons/Quit" to="Container" method="_on_quit_pressed"]
