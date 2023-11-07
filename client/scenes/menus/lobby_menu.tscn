@@ -1,0 +1,95 @@
+[gd_scene load_steps=7 format=3 uid="uid://b2rgfxg1rfb88"]
+
+[ext_resource type="Theme" uid="uid://cgvhxlh74eip8" path="res://scenes/menus/menu_theme.tres" id="1_htqdq"]
+[ext_resource type="Script" path="res://scenes/menus/menu.gd" id="2_bgu2x"]
+[ext_resource type="FontFile" uid="uid://dkyaqyvuut0uv" path="res://assets/fonts/uni-sans.heavy-caps.otf" id="2_ql1oc"]
+[ext_resource type="Script" path="res://scenes/menus/lobby_menu.gd" id="3_24rpn"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5iins"]
+font = ExtResource("2_ql1oc")
+font_size = 120
+shadow_size = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_7ljeq"]
+font = ExtResource("2_ql1oc")
+font_size = 42
+font_color = Color(0.803922, 0.803922, 0.803922, 1)
+
+[node name="LobbyMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_htqdq")
+script = ExtResource("2_bgu2x")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 102.0
+offset_right = 388.0
+offset_bottom = 109.0
+
+[node name="Controller" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 330.0
+theme_override_constants/margin_left = 19
+script = ExtResource("3_24rpn")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Controller"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Controller/VBoxContainer"]
+layout_mode = 2
+text = "LOBBY"
+label_settings = SubResource("LabelSettings_5iins")
+
+[node name="MarginContainer2" type="MarginContainer" parent="Controller/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+
+[node name="LobbyCode" type="Label" parent="Controller/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+text = "CODE: 000000000"
+label_settings = SubResource("LabelSettings_7ljeq")
+
+[node name="MarginContainer" type="MarginContainer" parent="Controller/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 90
+
+[node name="Buttons" type="VBoxContainer" parent="Controller/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Start" type="Button" parent="Controller/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "START GAME"
+alignment = 0
+
+[node name="Ready" type="Button" parent="Controller/VBoxContainer/Buttons"]
+visible = false
+layout_mode = 2
+text = "READY UP"
+alignment = 0
+
+[node name="Copy" type="Button" parent="Controller/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "COPY GAME CODE"
+alignment = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Controller/VBoxContainer/Buttons"]
+layout_mode = 2
+theme_override_constants/margin_top = 90
+
+[node name="Cancel" type="Button" parent="Controller/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "CANCEL
+"
+alignment = 0
+
+[connection signal="on_activated" from="." to="Controller" method="_on_lobby_menu_on_activated"]
+[connection signal="pressed" from="Controller/VBoxContainer/Buttons/Start" to="Controller" method="_on_start_pressed"]
+[connection signal="pressed" from="Controller/VBoxContainer/Buttons/Copy" to="Controller" method="_on_copy_pressed"]
+[connection signal="pressed" from="Controller/VBoxContainer/Buttons/Cancel" to="Controller" method="_on_cancel_pressed"]
