@@ -19,4 +19,4 @@ func _on_cancel_pressed():
 
 func _on_start_pressed():
 	Globals.game_controller.start_game.rpc()
-	get_parent().visible = false
+	#get_parent().goto.emit("PlayerMenu")

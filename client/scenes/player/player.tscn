@@ -1,11 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://7gqvchdwdpt2"]
+[gd_scene load_steps=10 format=3 uid="uid://7gqvchdwdpt2"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_c1e4i"]
 [ext_resource type="AudioStream" uid="uid://bxu7uas8r4400" path="res://assets/sounds/footsteps.mp3" id="2_6rkko"]
 [ext_resource type="Texture2D" uid="uid://dp22cq1rasm0b" path="res://assets/textures/flashlight.webp" id="2_bbpen"]
-[ext_resource type="PackedScene" uid="uid://b8kgnydota2rf" path="res://assets/models/Dwayne__the_Squirtle__Johnson_The_rock+Squirtle.gltf" id="4_6ki43"]
+[ext_resource type="Script" path="res://scenes/player/server_authority.gd" id="3_k83u5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_usus5"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gp25k"]
+material = SubResource("StandardMaterial3D_usus5")
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_2fkig"]
 properties/0/path = NodePath(".:position")
@@ -18,8 +21,14 @@ properties/1/sync = true
 properties/1/watch = false
 properties/2/path = NodePath(".:flashlight_on")
 properties/2/spawn = true
-properties/2/sync = true
-properties/2/watch = false
+properties/2/sync = false
+properties/2/watch = true
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_br4o5"]
+properties/0/path = NodePath(".:seeker")
+properties/0/spawn = true
+properties/0/sync = false
+properties/0/watch = true
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_js8bo"]
 
@@ -45,6 +54,10 @@ spot_angle = 40.0
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_2fkig")
+
+[node name="ServerAuthority" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_br4o5")
+script = ExtResource("3_k83u5")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_js8bo")
@@ -77,5 +90,18 @@ stream = ExtResource("2_6rkko")
 [node name="AudioListener3D" type="AudioListener3D" parent="."]
 current = true
 
-[node name="Dwayne__the_Squirtle__Johnson_The_rock+Squirtle" parent="." instance=ExtResource("4_6ki43")]
-transform = Transform3D(-0.05, 4.37114e-09, 1.91069e-16, -7.62297e-25, -2.18557e-09, 0.05, 4.37114e-09, 0.05, 2.18557e-09, -0.873792, -1.09004, 1.21511)
+[node name="SeekerLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.12718, 0)
+visible = false
+billboard = 1
+modulate = Color(1, 0, 0, 1)
+text = "SEEKER"
+font_size = 64
+
+[node name="HiderLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.12718, 0)
+visible = false
+billboard = 1
+modulate = Color(0.45098, 0.270588, 1, 1)
+text = "HIDER"
+font_size = 64

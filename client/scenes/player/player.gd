@@ -4,6 +4,7 @@ extends CharacterBody3D
 @export var jump_vel = 4.5
 @export var sensitivity = 0.01
 @export var flashlight_on = true
+@export var seeker = false
 @export var debug = false
 
 @onready var camera := $Camera3D
@@ -20,8 +21,16 @@ func _enter_tree():
 
 # Camera setup after authority is decided
 func _ready():
+	# The seeker variable is controlled by the server
+	# See ServerAuthority child
+	if seeker:
+		$SeekerLabel.visible = true
+	else:
+		$HiderLabel.visible = true
+	
 	if !is_multiplayer_authority() && !debug: return
 	camera.current = true
+	Globals.seeker = seeker
 
 # Movement & flashlight
 func _physics_process(delta):

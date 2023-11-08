@@ -5,5 +5,4 @@ func _ready():
 
 @rpc("any_peer", "call_local", "reliable")
 func start_game():
-	print("starting game lol")
-	$"../../UI".visible = false
+	$"/root/Main/UI/LobbyMenu".goto.emit("PlayerMenu")
