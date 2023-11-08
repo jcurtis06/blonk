@@ -1,14 +1,19 @@
-[gd_scene load_steps=10 format=3 uid="uid://7gqvchdwdpt2"]
+[gd_scene load_steps=13 format=3 uid="uid://7gqvchdwdpt2"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_c1e4i"]
 [ext_resource type="AudioStream" uid="uid://bxu7uas8r4400" path="res://assets/sounds/footsteps.mp3" id="2_6rkko"]
 [ext_resource type="Texture2D" uid="uid://dp22cq1rasm0b" path="res://assets/textures/flashlight.webp" id="2_bbpen"]
+[ext_resource type="Script" path="res://scenes/player/gun.gd" id="3_3svh1"]
 [ext_resource type="Script" path="res://scenes/player/server_authority.gd" id="3_k83u5"]
+[ext_resource type="AudioStream" uid="uid://bvvgobr851y7v" path="res://assets/sounds/gunshot.mp3" id="4_roi54"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_usus5"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gp25k"]
 material = SubResource("StandardMaterial3D_usus5")
+
+[sub_resource type="BoxMesh" id="BoxMesh_yaj6e"]
+size = Vector3(0.2, 0.2, 1)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_2fkig"]
 properties/0/path = NodePath(".:position")
@@ -34,6 +39,7 @@ properties/0/watch = true
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52148, 0)
+collision_layer = 3
 script = ExtResource("1_c1e4i")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -51,6 +57,23 @@ distance_fade_begin = 0.0
 distance_fade_shadow = 0.0
 distance_fade_length = 12000.0
 spot_angle = 40.0
+
+[node name="GunModel" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.914, -0.563, -0.703)
+visible = false
+mesh = SubResource("BoxMesh_yaj6e")
+
+[node name="Gun" type="Node3D" parent="Camera3D"]
+visible = false
+script = ExtResource("3_3svh1")
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D/Gun"]
+target_position = Vector3(2.08165e-12, 2.08165e-12, -20)
+collision_mask = 2
+
+[node name="Gunshot" type="AudioStreamPlayer3D" parent="Camera3D/Gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55696, 0.39383)
+stream = ExtResource("4_roi54")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_2fkig")
@@ -84,7 +107,7 @@ grow_vertical = 0
 size_flags_horizontal = 8
 size_flags_vertical = 8
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="Footsteps" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_6rkko")
 
 [node name="AudioListener3D" type="AudioListener3D" parent="."]

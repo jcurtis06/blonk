@@ -4,6 +4,7 @@ extends CharacterBody3D
 @export var jump_vel = 4.5
 @export var sensitivity = 0.01
 @export var flashlight_on = true
+@export var health = 3
 @export var seeker = false
 @export var debug = false
 
@@ -25,6 +26,8 @@ func _ready():
 	# See ServerAuthority child
 	if seeker:
 		$SeekerLabel.visible = true
+		$Camera3D/GunModel.visible = true
+		$Camera3D/Gun.visible = true
 	else:
 		$HiderLabel.visible = true
 	
@@ -59,11 +62,11 @@ func _physics_process(delta):
 		flashlight_on = !flashlight_on
 #
 	if !velocity.is_zero_approx():
-		if $AudioStreamPlayer.playing == false:
-			$AudioStreamPlayer.play()
+		if $Footsteps.playing == false:
+			$Footsteps.play()
 	else:
-		if $AudioStreamPlayer.playing == true:
-			$AudioStreamPlayer.play()
+		if $Footsteps.playing == true:
+			$Footsteps.play()
 
 # Camera rotation
 func _input(event):
@@ -72,3 +75,12 @@ func _input(event):
 		rotate_y(-event.relative.x * sensitivity)
 		camera.rotate_x(-event.relative.y * sensitivity)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
+
+@rpc("any_peer")
+func receive_damage():
+	print("ouchie")
+	health -= 1
+	if health <= 0:
+		health = 3
+		position.x = 0
+		position.z = 0
