@@ -1,5 +1,22 @@
 extends SubViewport
 
+@export var time_left = 60.0
+@export var hiders_remaining = 0
+
+func _enter_tree():
+	$GameSynchronizer.set_multiplayer_authority(1)
+
+func _process(delta):
+	if Globals.room_state != RoomState.STARTED: return
+	print(str(fmod($RoundTimer.time_left, 1.0)))
+	if fmod($RoundTimer.time_left, 1.0) <= 0.05:
+		time_left = $RoundTimer.time_left
+		print("updating...")
+	print(time_left)
+
+func _on_round_timer_timeout():
+	end_game.rpc(true)
+
 @rpc("any_peer", "call_local", "reliable")
 func start_game():
 	print("Starting game...")
@@ -22,3 +39,18 @@ func start_game():
 			player.seeker = true
 		
 		$Forest.add_child(player, true)
+	
+	Globals.room_state = RoomState.STARTED
+	$RoundTimer.start()
+
+@rpc("any_peer", "call_remote")
+func hider_dead(id: int) -> void:
+	$Forest.get_node(str(id)).queue_free()
+	Globals.hiders.remove_at(Globals.hiders.find(id))
+	
+	if Globals.hiders.size() <= 0:
+		end_game.rpc(false)
+
+@rpc("any_peer")
+func end_game(hiders_won: bool) -> void:
+	pass

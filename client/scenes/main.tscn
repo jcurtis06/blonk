@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dnq8ue63gqa0i"]
+[gd_scene load_steps=10 format=3 uid="uid://dnq8ue63gqa0i"]
 
 [ext_resource type="Script" path="res://scenes/menus/ui.gd" id="1_3gotp"]
 [ext_resource type="PackedScene" uid="uid://cdl5uylgkfg5" path="res://scenes/menus/StartMenu.tscn" id="1_73o4g"]
@@ -9,6 +9,12 @@
 [ext_resource type="Script" path="res://scenes/menus/game_controller.gd" id="5_fbt8q"]
 
 [sub_resource type="Theme" id="Theme_88pbx"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_yc3ep"]
+properties/0/path = NodePath(".:time_left")
+properties/0/spawn = true
+properties/0/sync = false
+properties/0/watch = true
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -62,6 +68,9 @@ script = ExtResource("5_fbt8q")
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="SubViewportContainer/GameController"]
 _spawnable_scenes = PackedStringArray("res://scenes/player/player.tscn")
 spawn_path = NodePath("../Forest")
+
+[node name="GameSynchronizer" type="MultiplayerSynchronizer" parent="SubViewportContainer/GameController"]
+replication_config = SubResource("SceneReplicationConfig_yc3ep")
 
 [node name="HostHTTP" type="HTTPRequest" parent="."]
 

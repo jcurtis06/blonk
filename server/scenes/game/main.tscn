@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://rsqvd610fc48"]
+[gd_scene load_steps=6 format=3 uid="uid://rsqvd610fc48"]
 
 [ext_resource type="Script" path="res://scenes/game/main.gd" id="1_hitto"]
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="2_258lm"]
 [ext_resource type="PackedScene" uid="uid://d0rj6k51r8way" path="res://scenes/game/multiplayer_menu.tscn" id="3_ykh5a"]
 [ext_resource type="Script" path="res://scenes/game/game_controller.gd" id="4_dsas5"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_p0leq"]
+properties/0/path = NodePath(".:time_left")
+properties/0/spawn = true
+properties/0/sync = false
+properties/0/watch = true
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -34,3 +40,12 @@ script = ExtResource("4_dsas5")
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="SubViewportContainer/GameController"]
 _spawnable_scenes = PackedStringArray("res://scenes/player/player.tscn")
 spawn_path = NodePath("../Forest")
+
+[node name="RoundTimer" type="Timer" parent="SubViewportContainer/GameController"]
+wait_time = 60.0
+one_shot = true
+
+[node name="GameSynchronizer" type="MultiplayerSynchronizer" parent="SubViewportContainer/GameController"]
+replication_config = SubResource("SceneReplicationConfig_p0leq")
+
+[connection signal="timeout" from="SubViewportContainer/GameController/RoundTimer" to="SubViewportContainer/GameController" method="_on_round_timer_timeout"]
