@@ -5,9 +5,6 @@ extends Control
 # Holds the room key of this server
 var room_key = ""
 
-# Control the state of the game
-var room_state := RoomState.IN_LOBBY
-
 func _ready() -> void:
 	print("Starting server...")
 	
@@ -31,7 +28,7 @@ func _ready() -> void:
 		multiplayer.peer_disconnected.connect(
 			func(pid: int) -> void:
 				# Destroy the player's node if in game
-				if room_state == RoomState.STARTED:
+				if Globals.room_state == RoomState.STARTED:
 					if has_node(str(pid)):
 						get_node(str(pid)).queue_free()
 				

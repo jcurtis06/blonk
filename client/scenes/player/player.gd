@@ -78,9 +78,6 @@ func _input(event):
 
 @rpc("any_peer")
 func receive_damage():
-	print("ouchie")
 	health -= 1
 	if health <= 0:
-		health = 3
-		position.x = 0
-		position.z = 0
+		Globals.game_controller.hider_dead.rpc_id(1, get_multiplayer_authority())
