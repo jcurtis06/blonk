@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dnq8ue63gqa0i"]
+[gd_scene load_steps=9 format=3 uid="uid://dnq8ue63gqa0i"]
 
 [ext_resource type="Script" path="res://scenes/menus/ui.gd" id="1_3gotp"]
 [ext_resource type="PackedScene" uid="uid://cdl5uylgkfg5" path="res://scenes/menus/StartMenu.tscn" id="1_73o4g"]
 [ext_resource type="PackedScene" uid="uid://b2gbr121ga20g" path="res://scenes/menus/MultiplayerMenu.tscn" id="2_5rph7"]
 [ext_resource type="PackedScene" uid="uid://blv6pyyvxuh0e" path="res://scenes/maps/Forest.tscn" id="3_qv6sx"]
 [ext_resource type="PackedScene" uid="uid://b2rgfxg1rfb88" path="res://scenes/menus/lobby_menu.tscn" id="3_snw6j"]
+[ext_resource type="PackedScene" uid="uid://ckii8ri4mafj4" path="res://scenes/menus/player_menu.tscn" id="5_6erlt"]
 [ext_resource type="Script" path="res://scenes/menus/game_controller.gd" id="5_fbt8q"]
 
 [sub_resource type="Theme" id="Theme_88pbx"]
@@ -32,6 +33,11 @@ offset_right = 1152.0
 [node name="LobbyMenu" parent="UI" instance=ExtResource("3_snw6j")]
 offset_left = 2304.0
 offset_right = 2304.0
+
+[node name="PlayerMenu" parent="UI" instance=ExtResource("5_6erlt")]
+offset_left = 3456.0
+offset_right = 3456.0
+mouse_filter = 2
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 texture_filter = 1

@@ -8,3 +8,5 @@ signal on_activated
 func _process(delta) -> void:
 	if position.distance_to(target) > 0.1:
 		position = position.lerp(target, 0.1)
+	
+	visible = position.x < 1150
