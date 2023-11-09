@@ -10,7 +10,10 @@ func _ready():
 
 @rpc("any_peer", "call_local", "reliable")
 func start_game():
-	$"/root/Main/UI/LobbyMenu".goto.emit("PlayerMenu")
+	if $"/root/Main/UI/LobbyMenu".visible == true:
+		$"/root/Main/UI/LobbyMenu".goto.emit("PlayerMenu")
+	else:
+		$"/root/Main/UI/EndMenu".goto.emit("PlayerMenu")
 
 @rpc("any_peer")
 func end_game(hiders_won: bool) -> void:
@@ -18,6 +21,9 @@ func end_game(hiders_won: bool) -> void:
 		print("Hiders have won!!!")
 	else:
 		print("Seekers have won!!!")
+	
+	$"/root/Main/UI/PlayerMenu".goto.emit("EndMenu")
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 @rpc("any_peer", "call_remote")
 func hider_dead(id: int) -> void:
