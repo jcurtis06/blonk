@@ -15,7 +15,7 @@ def create_room():
   port = random.randint(8000, 9000)
   room_key = str(uuid.uuid4())[:8]
 
-  Popen([parser.parse_args().server_executable, "--port=" + str(port), "--key=" + room_key])
+  Popen([parser.parse_args().server_executable, "--headless", "--port=" + str(port), "--key=" + room_key])
 
   rooms[room_key] = {"port": port, "players": []}
 

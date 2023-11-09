@@ -3,6 +3,8 @@ extends Control
 @onready var join_http := $JoinHTTP
 @onready var host_http := $HostHTTP
 
+@export var host_ip = "localhost"
+
 func _on_back_pressed():
 	get_parent().goto.emit("StartMenu")
 
@@ -10,7 +12,7 @@ func _on_host_pressed():
 	Globals.hosting = true
 	
 	# Send a request to the master server to create a room
-	host_http.request("http://127.0.0.1:25565/create_room")
+	host_http.request("http://" + host_ip + ":25565/create_room")
 	$VBoxContainer/Buttons/Host.text = "Loading..."
 
 func _on_host_http_request_completed(result, response_code, headers, body):
@@ -39,7 +41,7 @@ func _on_join_pressed():
 	
 	# Send a request to the master server to join a room
 	join_http.request(
-		"http://127.0.0.1:25565/join_room", 
+		"http://" + host_ip + ":25565/join_room", 
 		["Content-Type: application/json"], 
 		HTTPClient.METHOD_POST, JSON.stringify({"key": room_key})
 	)
@@ -64,7 +66,7 @@ func _join_room(port: int, key: String):
 	# Creates a peer on localhost
 	# This should be changed once running on server
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_client("localhost", port)
+	peer.create_client(host_ip, port)
 	multiplayer.multiplayer_peer = peer
 	
 	# Handle connection failure

@@ -8,11 +8,8 @@ func _enter_tree():
 
 func _process(delta):
 	if Globals.room_state != RoomState.STARTED: return
-	print(str(fmod($RoundTimer.time_left, 1.0)))
 	if fmod($RoundTimer.time_left, 1.0) <= 0.05:
 		time_left = $RoundTimer.time_left
-		print("updating...")
-	print(time_left)
 
 func _on_round_timer_timeout():
 	end_game.rpc(true)
@@ -51,6 +48,9 @@ func hider_dead(id: int) -> void:
 	if Globals.hiders.size() <= 0:
 		end_game.rpc(false)
 
-@rpc("any_peer")
+@rpc("any_peer", "call_local")
 func end_game(hiders_won: bool) -> void:
-	pass
+	print("game ended")
+	for player in get_tree().get_nodes_in_group("Player"):
+		print("freeing")
+		player.queue_free()

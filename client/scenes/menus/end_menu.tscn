@@ -1,0 +1,86 @@
+[gd_scene load_steps=7 format=3 uid="uid://b0o54dol7c4tj"]
+
+[ext_resource type="Theme" uid="uid://cgvhxlh74eip8" path="res://scenes/menus/menu_theme.tres" id="1_yscnw"]
+[ext_resource type="Script" path="res://scenes/menus/menu.gd" id="2_ge7r2"]
+[ext_resource type="Script" path="res://scenes/menus/end_menu.gd" id="3_fwhvi"]
+[ext_resource type="FontFile" uid="uid://dkyaqyvuut0uv" path="res://assets/fonts/uni-sans.heavy-caps.otf" id="3_q7qwx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5iins"]
+font = ExtResource("3_q7qwx")
+font_size = 120
+shadow_size = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_7ljeq"]
+font = ExtResource("3_q7qwx")
+font_size = 42
+font_color = Color(0.803922, 0.803922, 0.803922, 1)
+
+[node name="EndMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_yscnw")
+script = ExtResource("2_ge7r2")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 102.0
+offset_right = 741.0
+offset_bottom = 109.0
+
+[node name="Controller" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 330.0
+theme_override_constants/margin_left = 19
+script = ExtResource("3_fwhvi")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Controller"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Controller/VBoxContainer"]
+layout_mode = 2
+text = "ROUND OVER"
+label_settings = SubResource("LabelSettings_5iins")
+
+[node name="MarginContainer2" type="MarginContainer" parent="Controller/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+
+[node name="WinText" type="Label" parent="Controller/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+text = "SEEKERS HAVE WON"
+label_settings = SubResource("LabelSettings_7ljeq")
+
+[node name="MarginContainer" type="MarginContainer" parent="Controller/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 90
+
+[node name="Buttons" type="VBoxContainer" parent="Controller/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Rematch" type="Button" parent="Controller/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Play Again"
+alignment = 0
+
+[node name="Settings" type="Button" parent="Controller/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "settings"
+alignment = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Controller/VBoxContainer/Buttons"]
+layout_mode = 2
+theme_override_constants/margin_top = 90
+
+[node name="Exit" type="Button" parent="Controller/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Exit"
+alignment = 0
+
+[connection signal="pressed" from="Controller/VBoxContainer/Buttons/Rematch" to="Controller" method="_on_rematch_pressed"]
+[connection signal="pressed" from="Controller/VBoxContainer/Buttons/Exit" to="Controller" method="_on_exit_pressed"]
