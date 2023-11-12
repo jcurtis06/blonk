@@ -8,6 +8,8 @@ script/source = "extends Node
 @export var flashlight_on = true
 @export var seeker = false
 
+var data: PlayerData
+
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 "

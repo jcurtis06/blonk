@@ -18,6 +18,8 @@ config/icon="res://assets/icon.svg"
 [autoload]
 
 Globals="*res://scripts/globals.gd"
+GameController="*res://scenes/game/game_controller.tscn"
+Lobby="*res://scripts/lobby.gd"
 
 [display]
 

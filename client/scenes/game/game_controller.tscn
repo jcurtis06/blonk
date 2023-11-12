@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://drim75xfxe1yt"]
+
+[ext_resource type="Script" path="res://game_controller.gd" id="1_1vo0v"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_nuabi"]
+properties/0/path = NodePath(".:remaining_time")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+
+[node name="GameController" type="Node"]
+script = ExtResource("1_1vo0v")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_nuabi")

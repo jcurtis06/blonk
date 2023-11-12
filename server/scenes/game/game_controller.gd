@@ -4,6 +4,7 @@ extends SubViewport
 @export var hiders_remaining = 0
 
 func _enter_tree():
+	GameController.map_container = self
 	$GameSynchronizer.set_multiplayer_authority(1)
 
 func _process(delta):

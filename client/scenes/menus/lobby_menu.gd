@@ -18,5 +18,5 @@ func _on_cancel_pressed():
 	get_parent().goto.emit("StartMenu")
 
 func _on_start_pressed():
-	Globals.game_controller.start_game.rpc()
+	GameController.request_start_round.rpc_id(1, multiplayer.get_unique_id())
 	#get_parent().goto.emit("PlayerMenu")
